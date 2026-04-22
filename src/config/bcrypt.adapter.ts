@@ -1,15 +1,11 @@
+// src/config/bcrypt.adapter.ts
 import { compareSync, genSaltSync, hashSync } from "bcryptjs";
-import type { HashService } from "../domain/services/hash.service";
 
-export class bcryptAdapter {
-
+export class BcryptAdapter { // Clase con Mayúscula inicial
     static hash(password: string): string {
-        const salt = genSaltSync();
-
-        return hashSync(password, salt)
+        return hashSync(password, genSaltSync());
     }
-
     static compare(password: string, hashed: string): boolean {
-        return compareSync(password, hashed)
+        return compareSync(password, hashed);
     }
 }

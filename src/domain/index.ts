@@ -8,6 +8,9 @@ export * from './dtos/category/create-category.dto'
 
 export * from './entities/user.entity'
 
+// Repository
+export * from './repositories/user.repository'
+
 
 // Servuces
 export * from './services/email.service'

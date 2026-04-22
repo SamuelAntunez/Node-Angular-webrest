@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import { AuthController } from './controller';
-import { AuthService } from '../services';
 import { envs } from '../../config';
 import { BcryptHashService, JwtTokenService, MongoUserDatasource, NodeMailerService, UserRepositoryImpl } from '../../infrastructure';
+import { AuthMiddleware, RoleMiddleware } from '../middlewares';
+import { PostgresUserDatasource } from '../../infrastructure/datasource/postgres/postgres-user.datasrouce';
 
 
 
@@ -16,22 +17,23 @@ export class AuthRoutes {
         const router = Router();
 
         // Instancias de la infraestructura
-        const repository = new UserRepositoryImpl(new MongoUserDatasource)
+        const mongoRepository = new MongoUserDatasource()
+        const postgresRepository = new PostgresUserDatasource()
+        const repository = new UserRepositoryImpl(postgresRepository)
         const hashService = new BcryptHashService();
         const tokenService = new JwtTokenService();
 
-        // Normal
         const emailService = new NodeMailerService(envs.MAILER_SERVICE, envs.MAILER_EMAIL, envs.MAILER_SECRET_KEY, envs.SEND_EMAIL)
-        const authService = new AuthService(emailService)
 
+        //Middleware
+        const authMiddleware = new AuthMiddleware(tokenService, repository)
 
-        const controller = new AuthController(authService, repository, hashService, tokenService);
+        // controlador
+        const controller = new AuthController(repository, hashService, tokenService);
 
         // Definir las rutas
         router.post('/login', controller.loginUser);
-        router.post('/register', controller.registerUser);
-
-        router.get('/validate-email/:token', controller.validateEmail);
+        router.post('/register', [authMiddleware.validateJWT, RoleMiddleware.isAdmin], controller.registerUser);
 
 
 

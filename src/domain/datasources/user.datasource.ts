@@ -10,4 +10,6 @@ export abstract class UserDatasource {
     //todo: paginacion
     abstract findByEmail(email: string): Promise<UserEntity | null>;
 
+    abstract findById(id: string): Promise<UserEntity | null>;
+
 }

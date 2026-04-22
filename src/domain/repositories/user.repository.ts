@@ -7,4 +7,6 @@ export abstract class UserRepository {
     abstract register(registerUserDto: RegisterUserDto): Promise<UserEntity>;
     //todo: paginacion
     abstract findByEmail(email: string): Promise<UserEntity | null>;
+
+    abstract findById(id: string): Promise<UserEntity | null>;
 }

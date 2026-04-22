@@ -7,7 +7,6 @@ import { CategoryRoutes } from './category/routes';
 
 export class AppRoutes {
 
-
   static get routes(): Router {
 
     const router = Router();

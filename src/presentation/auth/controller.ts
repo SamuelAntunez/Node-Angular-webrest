@@ -1,7 +1,5 @@
 import type { Request, Response } from "express";
-import { CustomError, LoginUserDto, RegisterUserDto } from "../../domain";
-import type { AuthService } from "../services/auth.services";
-import { BcryptHashService, JwtTokenService, UserRepositoryImpl } from "../../infrastructure";
+import { CustomError, HashService, LoginUserDto, RegisterUserDto, TokenService, UserRepository } from "../../domain";
 import { LoginUser, RegisterUser } from "../../application/use-cases";
 
 
@@ -10,10 +8,9 @@ import { LoginUser, RegisterUser } from "../../application/use-cases";
 export class AuthController {
 
     constructor(
-        public readonly authService: AuthService,
-        public readonly repository: UserRepositoryImpl,
-        public readonly hashService: BcryptHashService,
-        public readonly tokenService: JwtTokenService
+        private readonly repository: UserRepository,
+        private readonly hashService: HashService,
+        private readonly tokenService: TokenService,
     ) { }
 
     private handleError = (error: unknown, res: Response) => {
@@ -33,15 +30,6 @@ export class AuthController {
             .catch(error => this.handleError(error, res))
     }
 
-    // loginUser = (req: Request, res: Response) => {
-    //     const [error, loginUserDto] = LoginUserDto.create(req.body)
-    //     if (error) return res.status(400).json({ error })
-
-    //     this.authService.loginUser(loginUserDto!)
-    //         .then((user) => res.json(user))
-    //         .catch(error => this.handleError(error, res))
-
-    // }
     loginUser = (req: Request, res: Response) => {
         const [error, loginUserDto] = LoginUserDto.create(req.body)
         if (error) return res.status(400).json({ error })
@@ -49,17 +37,6 @@ export class AuthController {
             .execute(loginUserDto!)
             .then(data => res.json(data))
             .catch(error => this.handleError(error, res))
-
-
-
-    }
-    validateEmail = (req: Request, res: Response) => {
-        const { token } = req.params;
-
-        this.authService.validateEmail(token!)
-            .then(() => res.json('Email validate'))
-            .catch(error => this.handleError(error, res))
-
     }
 
 }

@@ -1,21 +1,19 @@
-import { CustomError, type RegisterUserDto } from "../../../domain";
-import type { BcryptHashService, JwtTokenService, UserRepositoryImpl } from "../../../infrastructure";
+import { CustomError, HashService, TokenService, UserRepository, type RegisterUserDto } from "../../../domain";
 
 
 export class RegisterUser {
 
     constructor(
-        private readonly repository: UserRepositoryImpl,
-        private readonly hashService: BcryptHashService,
-        private readonly tokenService: JwtTokenService
+        private readonly repository: UserRepository,
+        private readonly hashService: HashService,
+        private readonly tokenService: TokenService,
     ) { }
 
-    async execute(registerUserDto: RegisterUserDto) {
+    public async execute(registerUserDto: RegisterUserDto) {
         // Encriptar contraseña
         const hashPassword = this.hashService.hash(registerUserDto.password)
         // Guardar pw encriptada
         const user = await this.repository.register({ ...registerUserDto, password: hashPassword })
-
         // Generar token
         const token = await this.tokenService.generateToken({ id: user.id })
         if (!token) throw CustomError.internalServer('Error generating token');

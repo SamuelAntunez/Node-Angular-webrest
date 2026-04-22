@@ -6,12 +6,16 @@ const JWT_SEED = envs.JWT_SEED;
 
 
 export class JwtAdapter {
-    static async generateToken(payload: any, duration: SignOptions['expiresIn'] = '2h') {
+    static async generateToken(payload: any, duration: string = '2h'): Promise<string | null> {
         return new Promise((resolve) => {
-            jwt.sign(payload, JWT_SEED, { expiresIn: duration }, (err, token) => {
+            const options: SignOptions = {
+                expiresIn: duration as any
+            }
+            jwt.sign(payload, JWT_SEED, options, (err, token) => {
                 if (err) return resolve(null);
-                resolve(token)
+                resolve(token || null)
             })
+
         })
     }
     static validateToken<T>(token: string): Promise<T | null> {

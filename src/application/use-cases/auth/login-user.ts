@@ -1,16 +1,14 @@
-import { CustomError, UserEntity, type LoginUserDto } from "../../../domain";
-import type { BcryptHashService, JwtTokenService, UserRepositoryImpl } from "../../../infrastructure";
-
+import { CustomError, HashService, TokenService, UserRepository, type LoginUserDto } from "../../../domain";
 export class LoginUser {
 
     constructor(
-        private readonly repository: UserRepositoryImpl,
-        private readonly hashService: BcryptHashService,
-        private readonly tokenService: JwtTokenService,
+        private readonly repository: UserRepository,
+        private readonly hashService: HashService,
+        private readonly tokenService: TokenService,
     ) { }
 
 
-    async execute(loginUserDto: LoginUserDto) {
+    public async execute(loginUserDto: LoginUserDto) {
         // Findone para verificar si el usuario existe
         const user = await this.repository.findByEmail(loginUserDto.email)
         if (!user) throw CustomError.badRequest('Invalid Email');
@@ -18,7 +16,7 @@ export class LoginUser {
         const isMatch = this.hashService.compare(loginUserDto.password, user.password)
         if (!isMatch) throw CustomError.badRequest('Password is wrong')
 
-        const { password, ...userEntity } = UserEntity.fromObject(user)
+        const { password: _, ...userEntity } = user
         const token = await this.tokenService.generateToken({ id: user.id })
         if (!token) throw CustomError.internalServer('Error while creating JWT')
         return {

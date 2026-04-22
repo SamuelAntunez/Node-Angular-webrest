@@ -22,10 +22,12 @@ export const envs = {
   //! JWT
   JWT_SEED: get('JWT_SEED').required().asString(),
 
-  WEBSERVICE_URL: get('WEBSERVICE_URL').required().asString()
+  WEBSERVICE_URL: get('WEBSERVICE_URL').required().asString(),
 
+  INITIAL_SUPERADMIN_EMAIL: get('INITIAL_SUPERADMIN_EMAIL').required().asEmailString(),
+  INITIAL_SUPERADMIN_PASSWORD: get('INITIAL_SUPERADMIN_PASSWORD').required().asString(),
 
-
+  POSTGRES_URL: get('POSTGRES_URL').required().asString(),
 }
 
 
