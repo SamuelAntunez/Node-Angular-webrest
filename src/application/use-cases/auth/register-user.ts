@@ -16,7 +16,7 @@ export class RegisterUser {
         const user = await this.repository.register({ ...registerUserDto, password: hashPassword })
         // Generar token
         const token = await this.tokenService.generateToken({ id: user.id })
-        if (!token) throw CustomError.internalServer('Error generating token');
+        if (!token) throw CustomError.internalServer('Error al generar el token');
 
         return {
             user,

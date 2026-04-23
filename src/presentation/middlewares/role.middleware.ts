@@ -12,7 +12,7 @@ export class RoleMiddleware {
 
             const hasRole = user.role.some((role: string) => roles.includes(role));
             if (!hasRole) {
-                return res.status(403).json({ error: `User with role ${user.role} is not authorized` })
+                return res.status(403).json({ error: `El usuario con rol ${user.role} no está autorizado` })
             }
             next()
         }

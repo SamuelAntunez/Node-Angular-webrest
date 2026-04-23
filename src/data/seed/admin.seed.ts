@@ -16,7 +16,7 @@ export class AdminSeed {
                     password: envs.INITIAL_SUPERADMIN_PASSWORD,
                     role: ['SUPER_ADMIN_ROLE']
                 })
-            console.log('SuperAdmin seeded')
+            console.log('SuperAdmin creado')
         } catch (error) {
             console.log(error)
         }

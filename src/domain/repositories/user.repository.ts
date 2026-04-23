@@ -1,4 +1,4 @@
-import type { RegisterUserDto } from "../dtos/auth/register-user.dto";
+import type { RegisterUserDto } from "../dtos/admin/register-user.dto";
 import type { UserEntity } from "../entities/user.entity";
 import { LoginUserDto } from '../dtos/auth/login-user.dto';
 

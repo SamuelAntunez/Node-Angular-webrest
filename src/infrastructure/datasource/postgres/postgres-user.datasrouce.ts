@@ -22,7 +22,7 @@ export class PostgresUserDatasource implements UserDatasource {
 
     async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
         const exist = await this.findByEmail(registerUserDto.email)
-        if (exist) throw CustomError.badRequest('Email Already Exists')
+        if (exist) throw CustomError.badRequest('El correo electrónico ya existe')
         const { name, email, password, role } = registerUserDto;
         try {
             const user = await prisma.user.create({

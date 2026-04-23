@@ -1,13 +1,32 @@
+# Environment Variables
 .env
 .env.*
 !.env.template
 
-/mongo
-/postgres
+# Dependencies and Builds
 node_modules/
 dist/
 build/
 coverage/
 
-# Prisma
+# Docker Data Volumes
+/mongo
+/postgres
+
+# Prisma Generated Client
 /src/data/postgres/generated/prisma
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -11,7 +11,7 @@ export class CreateCategoryDto {
         const { name, available } = object
         let availableBoolean = available;
 
-        if (!name) return ['Missing name'];
+        if (!name) return ['Falta el nombre'];
         if (typeof available !== 'boolean') {
             availableBoolean = (available === 'true')
         }

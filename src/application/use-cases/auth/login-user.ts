@@ -11,14 +11,14 @@ export class LoginUser {
     public async execute(loginUserDto: LoginUserDto) {
         // Findone para verificar si el usuario existe
         const user = await this.repository.findByEmail(loginUserDto.email)
-        if (!user) throw CustomError.badRequest('Invalid Email');
+        if (!user) throw CustomError.badRequest('Correo electrónico no válido');
         // isMatch... bcrypt compare
         const isMatch = this.hashService.compare(loginUserDto.password, user.password)
-        if (!isMatch) throw CustomError.badRequest('Password is wrong')
+        if (!isMatch) throw CustomError.badRequest('La contraseña es incorrecta')
 
         const { password: _, ...userEntity } = user
         const token = await this.tokenService.generateToken({ id: user.id })
-        if (!token) throw CustomError.internalServer('Error while creating JWT')
+        if (!token) throw CustomError.internalServer('Error al crear el JWT')
         return {
             user: userEntity,
             token: token,

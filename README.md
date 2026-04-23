@@ -34,13 +34,13 @@ docker compose up -d
 ```
 
 ### 4. Configurar Prisma (Base de datos Postgres)
-Debes sincronizar el esquema de la base de datos y generar el cliente de Prisma:
+Debes sincronizar el esquema con la base de datos recién levantada y generar el cliente de Prisma:
 ```bash
-# Crear y aplicar migraciones
-npx prisma migrate dev --name init
+# Sincronizar el esquema con la base de datos (crear tablas)
+npm run prisma:push
 
 # Generar el cliente de Prisma
-npx prisma generate
+npm run prisma:generate
 ```
 
 ## Ejecución

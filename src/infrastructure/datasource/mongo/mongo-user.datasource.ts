@@ -18,14 +18,14 @@ export class MongoUserDatasource implements UserDatasource {
 
     async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
         const exist = await this.findByEmail(registerUserDto.email)
-        if (exist) throw CustomError.badRequest('Email Already Exists')
+        if (exist) throw CustomError.badRequest('El correo electrónico ya existe')
         try {
             const user = new UserModel(registerUserDto)
             await user.save()
             return UserEntity.fromObject(user)
         } catch (error) {
             console.log({ error })
-            throw CustomError.internalServer('Error saving user to database')
+            throw CustomError.internalServer('Error al guardar el usuario en la base de datos')
         }
     }
 

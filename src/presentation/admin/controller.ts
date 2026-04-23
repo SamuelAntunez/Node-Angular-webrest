@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
-import { CustomError, HashService, LoginUserDto, RegisterUserDto, TokenService, UserRepository } from "../../domain";
+import { CustomError, HashService, RegisterUserDto, TokenService, UserRepository } from "../../domain";
 import { LoginUser, RegisterUser } from "../../application/use-cases";
 
 
 
 
-export class AuthController {
+export class AdminController {
 
     constructor(
         private readonly repository: UserRepository,
@@ -21,14 +21,12 @@ export class AuthController {
         return res.status(500).json({ error: 'Error interno del servidor' })
     }
 
-
-    loginUser = (req: Request, res: Response) => {
-        const [error, loginUserDto] = LoginUserDto.create(req.body)
+    registerUser = (req: Request, res: Response) => {
+        const [error, registerUserDto] = RegisterUserDto.create(req.body)
         if (error) return res.status(400).json({ error })
-        new LoginUser(this.repository, this.hashService, this.tokenService)
-            .execute(loginUserDto!)
+        new RegisterUser(this.repository, this.hashService, this.tokenService)
+            .execute(registerUserDto!)
             .then(data => res.json(data))
             .catch(error => this.handleError(error, res))
     }
-
 }

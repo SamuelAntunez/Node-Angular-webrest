@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AuthRoutes } from './auth/routes';
-import { CategoryRoutes } from './category/routes';
+import { AdminRoutes } from './admin/routes';
 
 
 
@@ -15,7 +15,7 @@ export class AppRoutes {
     // router.use('/api/todos', /*TodoRoutes.routes */ );
 
     router.use('/api/auth', AuthRoutes.routes);
-    router.use('/api/categories', CategoryRoutes.routes);
+    router.use('/api/admin', AdminRoutes.routes);
 
 
 

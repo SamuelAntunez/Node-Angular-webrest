@@ -1,16 +1,15 @@
 import { Router } from 'express';
-import { AuthController } from './controller';
 import { envs } from '../../config';
 import { BcryptHashService, JwtTokenService, MongoUserDatasource, NodeMailerService, UserRepositoryImpl } from '../../infrastructure';
 import { AuthMiddleware, RoleMiddleware } from '../middlewares';
 import { PostgresUserDatasource } from '../../infrastructure/datasource/postgres/postgres-user.datasrouce';
+import { AdminController } from './controller';
 
 
 
 
 
-export class AuthRoutes {
-
+export class AdminRoutes {
 
     static get routes(): Router {
 
@@ -29,11 +28,10 @@ export class AuthRoutes {
         const authMiddleware = new AuthMiddleware(tokenService, repository)
 
         // controlador
-        const controller = new AuthController(repository, hashService, tokenService);
+        const controller = new AdminController(repository, hashService, tokenService);
 
         // Definir las rutas
-        router.post('/login', controller.loginUser);
-
+        router.post('/register', [authMiddleware.validateJWT, RoleMiddleware.isAdmin], controller.registerUser);
 
         return router;
     }

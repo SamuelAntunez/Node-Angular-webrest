@@ -16,11 +16,11 @@ export class MongoDatabase {
             await mongoose.connect(mongoUrl, {
                 dbName
             })
-            console.log('Mongo Connected')
+            console.log('Mongo conectado')
             return true
 
         } catch (error) {
-            console.log('Mongo Connection error')
+            console.log('Error de conexión a Mongo')
             throw error;
         }
     }
